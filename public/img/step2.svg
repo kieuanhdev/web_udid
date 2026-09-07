@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="100%" height="100%">
+  <defs>
+    <filter id="shadow2" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Nền giao diện Cài đặt iOS -->
+  <rect width="400" height="240" rx="16" fill="#F2F2F7"/>
+
+  <!-- Thanh tiêu đề Cài đặt -->
+  <text x="28" y="42" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#000000">
+    Cài đặt
+  </text>
+
+  <!-- Ô tìm kiếm mô phỏng -->
+  <rect x="24" y="56" width="352" height="30" rx="8" fill="#E3E3E8"/>
+  <circle cx="40" cy="71" r="5" fill="#8E8E93" opacity="0.6"/>
+  <text x="54" y="75" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#8E8E93">Tìm kiếm</text>
+
+  <!-- Danh thiếp Apple ID mô phỏng -->
+  <g filter="url(#shadow2)">
+    <rect x="24" y="96" width="352" height="46" rx="10" fill="#FFFFFF"/>
+    <circle cx="48" cy="119" r="14" fill="#D1D1D6"/>
+    <text x="70" y="116" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#000000">Tài khoản Apple</text>
+    <text x="70" y="130" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" fill="#8E8E93">iCloud, Phương tiện &amp; Mục mua</text>
+  </g>
+
+  <!-- Dòng ĐÃ TẢI VỀ HỒ SƠ (Highlight nổi bật) -->
+  <g filter="url(#shadow2)">
+    <rect x="24" y="152" width="352" height="58" rx="12" fill="#FFFFFF" stroke="#007AFF" stroke-width="2"/>
+    
+    <!-- Icon Profile -->
+    <rect x="36" y="165" width="32" height="32" rx="8" fill="#007AFF"/>
+    <path d="M46 183 C46 178 58 178 58 183 Z" fill="#FFFFFF"/>
+    <circle cx="52" cy="174" r="4" fill="#FFFFFF"/>
+
+    <!-- Nhãn chữ -->
+    <text x="78" y="177" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#007AFF">
+      Đã tải về hồ sơ
+    </text>
+    <text x="78" y="194" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#636366">
+      Lấy UDID thiết bị (Softdreams)
+    </text>
+
+    <!-- Badge 1 & Chevron > -->
+    <circle cx="340" cy="181" r="9" fill="#FF3B30"/>
+    <text x="340" y="185" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">1</text>
+    <path d="M360 176 L365 181 L360 186" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

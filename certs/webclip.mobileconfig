@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadType</key>
+      <string>com.apple.webClip.managed</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+      <key>PayloadIdentifier</key>
+      <string>vn.softdreams.udid.webclip</string>
+      <key>PayloadUUID</key>
+      <string>9F8706EA-7BF2-4876-805C-F02A0B7FBE1A</string>
+      <key>PayloadDisplayName</key>
+      <string>Lấy UDID</string>
+      <key>PayloadDescription</key>
+      <string>Lối tắt Safari lấy UDID thiết bị</string>
+      <key>URL</key>
+      <string>{{BASE_URL}}</string>
+      <key>Label</key>
+      <string>Lấy UDID</string>
+      <key>FullScreen</key>
+      <false/>
+      <key>IsRemovable</key>
+      <true/>
+      <key>Icon</key>
+      <data>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</data>
+    </dict>
+  </array>
+  <key>PayloadDisplayName</key>
+  <string>Lấy UDID Web Clip</string>
+  <key>PayloadIdentifier</key>
+  <string>vn.softdreams.udid.webclip.profile</string>
+  <key>PayloadRemovalDisallowed</key>
+  <false/>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadUUID</key>
+  <string>E71825B9-5735-4309-8F2D-BF6D649BA833</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+  <key>PayloadOrganization</key>
+  <string>Softdreams</string>
+  <key>PayloadDescription</key>
+  <string>Lối tắt lấy UDID thiết bị trên màn hình chính (mở qua Safari)</string>
+</dict>
+</plist>

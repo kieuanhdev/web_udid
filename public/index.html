@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Lấy UDID thiết bị iOS</title>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lấy UDID">
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" href="/img/icon.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<main class="container">
+  <!-- Header -->
+  <header class="header">
+    <img src="/img/icon.png" alt="Logo UDID" class="app-icon" width="68" height="68">
+    <h1>Lấy UDID thiết bị iOS</h1>
+    <p class="subtitle">Công cụ hỗ trợ lấy nhanh mã UDID để đăng ký thiết bị kiểm thử (AdHoc / Internal Testing)</p>
+  </header>
+
+  <!-- Non-Safari Helper (Chỉ hiển thị khi mở ngoài Safari) -->
+  <div id="warn-not-safari" class="warning-banner" hidden>
+    <div class="warning-header">
+      <div class="warning-icon-pill">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <div class="warning-text">
+        <strong>Vui lòng mở bằng Safari trên iPhone / iPad</strong>
+        <p>Hệ điều hành iOS chỉ cho phép cài đặt hồ sơ cấu hình trực tiếp qua trình duyệt Safari.</p>
+      </div>
+    </div>
+    <button id="btn-copy-url" class="btn-copy-url" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <span id="btn-copy-url-text">Sao chép liên kết</span>
+    </button>
+    <div class="warning-tips">
+      Mẹo: Bấm sao chép liên kết, sau đó mở <strong>Safari</strong> và dán vào thanh địa chỉ.
+    </div>
+  </div>
+
+  <!-- Main Content Flow -->
+  <div id="main-content">
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <a id="btn-enroll" class="btn-primary" href="/enroll?t={{TOKEN}}">
+        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Lấy UDID ngay
+      </a>
+
+      <p class="cta-note">
+        <svg class="cta-note-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        Hồ sơ tạm thời an toàn, hệ điều hành iOS sẽ tự động xóa sau khi lấy xong.
+      </p>
+    </div>
+
+    <!-- Stepper Guide Section -->
+    <section class="guide-section">
+      <div class="guide-header">
+        <h2>Hướng dẫn 4 bước thực hiện</h2>
+        <p class="guide-subtitle">Thao tác đơn giản trực tiếp trên thiết bị</p>
+      </div>
+
+      <!-- Segmented Step Switcher -->
+      <div class="segmented-control" role="tablist">
+        <button class="segmented-btn active" data-step="1" type="button">1. Cho phép</button>
+        <button class="segmented-btn" data-step="2" type="button">2. Cài đặt</button>
+        <button class="segmented-btn" data-step="3" type="button">3. Xác thực</button>
+        <button class="segmented-btn" data-step="4" type="button">4. Kết quả</button>
+      </div>
+
+      <div class="step-viewport">
+        <!-- Bước 1 -->
+        <article id="step-card-1" class="step-card active">
+          <div class="step-header">
+            <span class="step-number">1</span>
+            <div class="step-info">
+              <h3>Bấm "Lấy UDID" và Cho phép</h3>
+              <p>Bấm nút màu xanh ở trên → chọn <strong>Cho phép (Allow)</strong> khi trình duyệt Safari hỏi tải hồ sơ cấu hình về máy.</p>
+            </div>
+          </div>
+          <div class="step-media">
+            <img src="/img/step1.svg" alt="Minh họa bước 1: Cho phép tải hồ sơ" width="400" height="240">
+          </div>
+        </article>
+
+        <!-- Bước 2 -->
+        <article id="step-card-2" class="step-card">
+          <div class="step-header">
+            <span class="step-number">2</span>
+            <div class="step-info">
+              <h3>Vào Cài đặt máy</h3>
+              <p>Mở ứng dụng <strong>Cài đặt (Settings)</strong> → chọn mục <strong>"Đã tải về hồ sơ" (Profile Downloaded)</strong> ở đầu danh sách.</p>
+            </div>
+          </div>
+          <div class="step-media">
+            <img src="/img/step2.svg" alt="Minh họa bước 2: Đã tải về hồ sơ trong Cài đặt" width="400" height="240">
+          </div>
+        </article>
+
+        <!-- Bước 3 -->
+        <article id="step-card-3" class="step-card">
+          <div class="step-header">
+            <span class="step-number">3</span>
+            <div class="step-info">
+              <h3>Bấm Cài đặt & Nhập mật mã</h3>
+              <p>Bấm <strong>Cài đặt (Install)</strong> góc trên bên phải → nhập mật mã mở khóa máy → bấm tiếp <strong>Cài đặt</strong> để xác nhận.</p>
+            </div>
+          </div>
+          <div class="step-media">
+            <img src="/img/step3.svg" alt="Minh họa bước 3: Cài đặt cấu hình và mật mã" width="400" height="240">
+          </div>
+        </article>
+
+        <!-- Bước 4 -->
+        <article id="step-card-4" class="step-card">
+          <div class="step-header">
+            <span class="step-number">4</span>
+            <div class="step-info">
+              <h3>Nhận kết quả UDID</h3>
+              <p>Safari sẽ tự động mở lại trang web và hiển thị mã UDID. Bấm nút <strong>Sao chép</strong> để gửi cho quản trị viên.</p>
+            </div>
+          </div>
+          <div class="step-media">
+            <img src="/img/step4.svg" alt="Minh họa bước 4: Safari hiện kết quả UDID" width="400" height="240">
+          </div>
+        </article>
+      </div>
+
+      <!-- Navigation for Stepper -->
+      <div class="stepper-nav">
+        <button id="btn-prev-step" class="btn-nav-step" type="button" disabled>‹ Trước</button>
+        <span id="step-indicator" class="step-indicator-text">Bước 1 / 4</span>
+        <button id="btn-next-step" class="btn-nav-step" type="button">Tiếp ›</button>
+      </div>
+    </section>
+
+    <!-- WebClip Section -->
+    <div class="webclip-section">
+      <a id="btn-webclip" class="btn-secondary" href="/webclip">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="4" ry="4"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        Thêm lối tắt vào Màn hình chính
+      </a>
+      <p class="webclip-note">Cài đặt biểu tượng trên màn hình chính để mở nhanh bằng Safari những lần sau.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">Hỗ trợ tất cả thiết bị iPhone và iPad chạy iOS 12 trở lên</p>
+    </footer>
+  </div>
+</main>
+
+<!-- Floating Toast -->
+<div id="toast-notice" class="toast-notice" role="status" aria-live="polite">
+  <svg class="toast-icon-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  <span id="toast-text">Đã sao chép!</span>
+</div>
+
+<script>
+  // Cờ IS_SAFARI_IOS do server render sẵn dựa vào User-Agent lúc GET /.
+  let isSafariIOS = '{{IS_SAFARI_IOS}}' === 'true';
+
+  // Hỗ trợ iPadOS 13+ gửi Desktop User-Agent ("Macintosh") trên Safari
+  if (!isSafariIOS && typeof navigator !== 'undefined') {
+    const isIPadOS = navigator.maxTouchPoints > 1 && /Macintosh/i.test(navigator.userAgent);
+    const isNotThirdParty = !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
+    if (isIPadOS && isNotThirdParty) {
+      isSafariIOS = true;
+    }
+  }
+
+  if (!isSafariIOS) {
+    const warn = document.getElementById('warn-not-safari');
+    const main = document.getElementById('main-content');
+    if (warn) warn.hidden = false;
+    if (main) {
+      main.classList.add('disabled-content');
+    }
+  }
+
+  // Toast Helper
+  function showToast(msg) {
+    const toast = document.getElementById('toast-notice');
+    const text = document.getElementById('toast-text');
+    if (text) text.textContent = msg;
+    if (toast) {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  }
+
+  // Copy Link Helper
+  const btnCopyUrl = document.getElementById('btn-copy-url');
+  if (btnCopyUrl) {
+    btnCopyUrl.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(window.location.href);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = window.location.href;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        if (navigator.vibrate) navigator.vibrate(10);
+        showToast('✓ Đã sao chép liên kết!');
+      } catch (e) {
+        showToast('Không thể sao chép, vui lòng sao chép link từ thanh địa chỉ');
+      }
+    });
+  }
+
+  // Interactive Stepper Logic
+  let currentStep = 1;
+  const totalSteps = 4;
+  const segmentedBtns = document.querySelectorAll('.segmented-btn');
+  const stepCards = document.querySelectorAll('.step-card');
+  const btnPrev = document.getElementById('btn-prev-step');
+  const btnNext = document.getElementById('btn-next-step');
+  const stepIndicator = document.getElementById('step-indicator');
+
+  function setStep(step) {
+    if (step < 1 || step > totalSteps) return;
+    currentStep = step;
+
+    segmentedBtns.forEach(btn => {
+      const s = Number(btn.getAttribute('data-step'));
+      btn.classList.toggle('active', s === currentStep);
+    });
+
+    stepCards.forEach((card, idx) => {
+      card.classList.toggle('active', (idx + 1) === currentStep);
+    });
+
+    if (btnPrev) btnPrev.disabled = currentStep === 1;
+    if (btnNext) btnNext.disabled = currentStep === totalSteps;
+    if (stepIndicator) stepIndicator.textContent = `Bước ${currentStep} / ${totalSteps}`;
+  }
+
+  segmentedBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const step = Number(btn.getAttribute('data-step'));
+      setStep(step);
+    });
+  });
+
+  if (btnPrev) {
+    btnPrev.addEventListener('click', () => setStep(currentStep - 1));
+  }
+  if (btnNext) {
+    btnNext.addEventListener('click', () => setStep(currentStep + 1));
+  }
+</script>
+
+</body>
+</html>

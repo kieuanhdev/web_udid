@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ios-udid-web
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: BASE_URL
+        sync: false
+      - key: TOKEN_TTL_MS
+        value: "300000"
