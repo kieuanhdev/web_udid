@@ -42,11 +42,15 @@ try {
   await wait(1000);
 
   // 1. GET /health
-  console.log('[1/8] Kiểm tra GET /health...');
+  console.log('[1/8] Kiểm tra GET & HEAD /health...');
   const healthRes = await request('/health');
   assert.strictEqual(healthRes.status, 200);
   assert.deepStrictEqual(JSON.parse(healthRes.body), { ok: true });
-  console.log('✓ /health trả về 200 OK!\n');
+
+  const healthHeadRes = await request('/health', { method: 'HEAD' });
+  assert.strictEqual(healthHeadRes.status, 200);
+  assert.strictEqual(healthHeadRes.body, '');
+  console.log('✓ /health (GET & HEAD) trả về 200 OK!\n');
 
   // 2. GET / (Trang chủ)
   console.log('[2/8] Kiểm tra GET /...');

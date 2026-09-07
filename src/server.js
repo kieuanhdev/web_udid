@@ -43,9 +43,13 @@ async function sendFile(res, filePath, contentType) {
   }
 }
 
-function sendJson(res, code, obj) {
+function sendJson(res, code, obj, isHead = false) {
   res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
-  res.end(JSON.stringify(obj));
+  if (isHead) {
+    res.end();
+  } else {
+    res.end(JSON.stringify(obj));
+  }
 }
 
 function readRawBody(req) {
@@ -221,7 +225,9 @@ const server = http.createServer(async (req, res) => {
 
   try {
     if (req.method === 'GET' && url.pathname === '/') return handleHome(req, res, url);
-    if (req.method === 'GET' && url.pathname === '/health') return sendJson(res, 200, { ok: true });
+    if ((req.method === 'GET' || req.method === 'HEAD') && url.pathname === '/health') {
+      return sendJson(res, 200, { ok: true }, req.method === 'HEAD');
+    }
     if (req.method === 'GET' && url.pathname === '/enroll') return handleEnroll(req, res, url);
     if (req.method === 'POST' && url.pathname === '/callback') return handleCallback(req, res);
     if (req.method === 'GET' && url.pathname === '/result') return handleResult(req, res, url);
