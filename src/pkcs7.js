@@ -42,7 +42,7 @@ export function extractAttributes(buffer) {
   const data = plist.parse(xml);
 
   const udid = data.UDID;
-  const token = data.CHALLENGE;
+  const token = data.CHALLENGE ?? data.Challenge;
 
   if (!udid || !token) {
     throw new Error('Payload thiếu UDID hoặc CHALLENGE');

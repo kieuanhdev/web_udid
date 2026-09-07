@@ -113,6 +113,11 @@ async function handleCallback(req, res) {
     return;
   }
 
+  if (!buffer || buffer.length === 0) {
+    res.writeHead(400).end('Payload rỗng');
+    return;
+  }
+
   let attrs;
   try {
     attrs = extractAttributes(buffer);
@@ -140,16 +145,15 @@ async function handleCallback(req, res) {
   console.log(`⏱️  Thời gian: ${new Date().toLocaleString('vi-VN')}`);
   console.log('========================================\n');
 
-  const saved = saveResult(token, { udid, product, version, serial });
-  if (!saved) {
-    // token không tồn tại hoặc đã hết hạn — vẫn phải trả về gì đó cho daemon,
-    // không redirect vì không có phiên nào để redirect tới
-    res.writeHead(200).end();
-    return;
-  }
+  saveResult(token, { udid, product, version, serial });
 
-  // Dùng 302 Found thay vì 301 Moved Permanently để tránh Safari/iOS cache cứng kết quả
-  res.writeHead(302, { Location: `${BASE_URL}/result?t=${token}` });
+  // Theo chuẩn Apple OTA Profile Service, server BẮT BUỘC phải dùng 301 Moved Permanently
+  // để iOS tự động đóng màn hình Cài đặt và chuyển sang Safari mở trang kết quả.
+  res.writeHead(301, {
+    Location: `${BASE_URL}/result?t=${token}`,
+    'Cache-Control': 'no-store, no-cache, must-revalidate, private',
+    Pragma: 'no-cache',
+  });
   res.end();
 }
 
