@@ -419,69 +419,42 @@
     });
   }
 
-  // Timeline Accordion — main guide (#step-timeline only)
-  const tlItems = document.querySelectorAll('#step-timeline .tl-item');
+  // Reusable Timeline Accordion setup
+  function setupAccordion(containerSelector) {
+    const items = document.querySelectorAll(`${containerSelector} .tl-item`);
+    if (!items.length) return;
 
-  function openStep(targetItem) {
-    tlItems.forEach(item => {
-      const isTarget = item === targetItem;
-      item.classList.toggle('active', isTarget);
+    function openItem(targetItem) {
+      items.forEach(item => {
+        const isTarget = item === targetItem;
+        item.classList.toggle('active', isTarget);
+        const numBtn = item.querySelector('.tl-num');
+        if (numBtn) numBtn.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
+      });
+      setTimeout(() => {
+        targetItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 80);
+    }
+
+    items.forEach(item => {
       const numBtn = item.querySelector('.tl-num');
-      if (numBtn) numBtn.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
-    });
-    setTimeout(() => {
-      targetItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 80);
-  }
-
-  tlItems.forEach(item => {
-    const numBtn = item.querySelector('.tl-num');
-    const header = item.querySelector('.tl-header');
-    [numBtn, header].forEach(btn => {
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        const isAlreadyActive = item.classList.contains('active');
-        if (isAlreadyActive) {
-          item.classList.remove('active');
-          numBtn?.setAttribute('aria-expanded', 'false');
-        } else {
-          openStep(item);
-        }
+      const header = item.querySelector('.tl-header');
+      [numBtn, header].forEach(btn => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          if (item.classList.contains('active')) {
+            item.classList.remove('active');
+            numBtn?.setAttribute('aria-expanded', 'false');
+          } else {
+            openItem(item);
+          }
+        });
       });
     });
-  });
-
-  // Shortcut timeline accordion (home page)
-  const scHomeItems = document.querySelectorAll('#shortcut-timeline-home .tl-item');
-
-  function openScHomeStep(targetItem) {
-    scHomeItems.forEach(item => {
-      const isTarget = item === targetItem;
-      item.classList.toggle('active', isTarget);
-      const nb = item.querySelector('.tl-num');
-      if (nb) nb.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
-    });
-    setTimeout(() => {
-      targetItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 80);
   }
 
-  scHomeItems.forEach(item => {
-    const numBtn = item.querySelector('.tl-num');
-    const header = item.querySelector('.tl-header');
-    [numBtn, header].forEach(btn => {
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        const isActive = item.classList.contains('active');
-        if (isActive) {
-          item.classList.remove('active');
-          numBtn?.setAttribute('aria-expanded', 'false');
-        } else {
-          openScHomeStep(item);
-        }
-      });
-    });
-  });
+  setupAccordion('#step-timeline');
+  setupAccordion('#shortcut-timeline-home');
 </script>
 
 </body>

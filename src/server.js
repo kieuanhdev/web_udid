@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,10 +33,19 @@ if (!BASE_URL) {
 
 // ---- helpers ----
 
-async function sendFile(res, filePath, contentType) {
+async function sendFile(res, filePath, contentType, cacheControl = 'no-store', isHead = false) {
   try {
+    const fileStat = await stat(filePath);
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Content-Length': fileStat.size,
+      'Cache-Control': cacheControl,
+    });
+    if (isHead) {
+      res.end();
+      return;
+    }
     const buf = await readFile(filePath);
-    res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-store' });
     res.end(buf);
   } catch {
     res.writeHead(404).end('Not found');
@@ -74,7 +83,7 @@ function readRawBody(req) {
 
 // ---- route handlers ----
 
-async function handleHome(req, res, url) {
+async function handleHome(req, res) {
   const ua = req.headers['user-agent'] || '';
   const token = createSession();
   const html = await readFile(path.join(PUBLIC_DIR, 'index.html'), 'utf8');
@@ -223,8 +232,21 @@ async function handleStatic(req, res, pathname) {
     return;
   }
   const ext = path.extname(filePath);
-  const types = { '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
-  await sendFile(res, filePath, types[ext] || 'application/octet-stream');
+  const types = {
+    '.css': 'text/css',
+    '.js': 'text/javascript',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.svg': 'image/svg+xml',
+    '.webp': 'image/webp',
+    '.ico': 'image/x-icon',
+  };
+
+  const isImg = pathname.startsWith('/img/');
+  const cacheControl = isImg ? 'public, max-age=86400' : 'no-cache';
+  const isHead = req.method === 'HEAD';
+
+  await sendFile(res, filePath, types[ext] || 'application/octet-stream', cacheControl, isHead);
 }
 
 // ---- router ----
@@ -239,7 +261,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
-    if (req.method === 'GET' && url.pathname === '/') return handleHome(req, res, url);
+    if (req.method === 'GET' && url.pathname === '/') return handleHome(req, res);
     if ((req.method === 'GET' || req.method === 'HEAD') && url.pathname === '/health') {
       return sendJson(res, 200, { ok: true }, req.method === 'HEAD');
     }
@@ -248,7 +270,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/result') return handleResult(req, res, url);
     if (req.method === 'GET' && url.pathname === '/webclip') return handleWebclip(req, res);
 
-    if (req.method === 'GET' && /^\/(style\.css|img\/)/.test(url.pathname)) {
+    if ((req.method === 'GET' || req.method === 'HEAD') && /^\/(style\.css|img\/)/.test(url.pathname)) {
       return handleStatic(req, res, url.pathname);
     }
 

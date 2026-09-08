@@ -2,10 +2,23 @@ import { randomBytes } from 'node:crypto';
 
 const TTL_MS = Number(process.env.TOKEN_TTL_MS) || 10 * 60 * 1000; // 10 phút mặc định (tránh user thao tác chậm trong Cài đặt)
 const CLEANUP_INTERVAL_MS = 60 * 1000; // quét dọn mỗi 60 giây
+const MAX_SESSIONS = Number(process.env.MAX_SESSIONS) || 10000; // giới hạn chống DoS tràn bộ nhớ
 
 // Map<token, { data: object|null, createdAt: number }>
 // data = null nghĩa là phiên đã tạo (GET /) nhưng chưa có UDID (chưa POST /callback về)
 const store = new Map();
+
+/**
+ * Dọn dẹp các session đã quá hạn TTL.
+ */
+function cleanupExpired() {
+  const now = Date.now();
+  for (const [token, entry] of store) {
+    if (now - entry.createdAt > TTL_MS) {
+      store.delete(token);
+    }
+  }
+}
 
 /**
  * Sinh token mới, đăng ký một phiên rỗng.
@@ -13,6 +26,15 @@ const store = new Map();
  * @returns {string} token
  */
 export function createSession() {
+  if (store.size >= MAX_SESSIONS) {
+    cleanupExpired();
+    // Nếu vẫn vượt ngưỡng tối đa, loại bỏ phiên cũ nhất
+    if (store.size >= MAX_SESSIONS) {
+      const oldestToken = store.keys().next().value;
+      if (oldestToken) store.delete(oldestToken);
+    }
+  }
+
   const token = randomBytes(16).toString('hex');
   store.set(token, { data: null, createdAt: Date.now() });
   return token;
@@ -71,13 +93,6 @@ function isExpired(entry) {
 }
 
 // Dọn rác định kỳ: các token đã quá hạn TTL sẽ được giải phóng khỏi RAM
-const cleanupTimer = setInterval(() => {
-  const now = Date.now();
-  for (const [token, entry] of store) {
-    if (now - entry.createdAt > TTL_MS) {
-      store.delete(token);
-    }
-  }
-}, CLEANUP_INTERVAL_MS);
+const cleanupTimer = setInterval(cleanupExpired, CLEANUP_INTERVAL_MS);
 
 cleanupTimer.unref(); // không giữ process sống chỉ vì cái timer này

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
-const PAYLOAD_IDENTIFIER = 'vn.softdreams.udid.enroll';
-const ORG_NAME = 'Softdreams';
+const PAYLOAD_IDENTIFIER = process.env.PAYLOAD_IDENTIFIER || 'vn.softdreams.udid.enroll';
+const ORG_NAME = process.env.ORG_NAME || 'Softdreams';
 
 /**
  * Escape các ký tự đặc biệt trong XML — token/UUID của mình tự sinh nên
