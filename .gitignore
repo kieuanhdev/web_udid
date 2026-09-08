@@ -1,7 +1,27 @@
 node_modules/
 .env
+.env.*
+!.env.example
+
+# Certificates and keys
 *.pem
 *.key
 *.crt
+*.signed.mobileconfig
+
+# Build and scratch artifacts
+scratch/
+
+# IDE & OS files
 .DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+.vscode/
+.idea/
 .agents
+
+# Logs
+*.log
+npm-debug.log*
+
