@@ -20,6 +20,404 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script src="/img/qr-canvas.js"></script>
+  <style>
+    /* ── Result-specific extras ── */
+
+    /* Hero success glow: green */
+    .result-hero { padding: 44px 24px 40px; }
+    .result-hero h1 { margin-bottom: 6px; }
+
+    /* UDID hero display — the star of the show */
+    .udid-hero {
+      background: var(--bg-card);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .udid-hero__top {
+      background: linear-gradient(135deg, rgba(234,86,38,0.07), rgba(234,86,38,0.02));
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .udid-hero__device-icon {
+      width: 40px; height: 40px;
+      background: #fff;
+      border: 1px solid rgba(234,86,38,0.15);
+      border-radius: 12px;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(234,86,38,0.10);
+      flex-shrink: 0;
+    }
+
+    .udid-hero__device-info { flex: 1; min-width: 0; }
+
+    .udid-hero__model {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--txt);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .udid-hero__ver {
+      font-size: 11.5px;
+      color: var(--txt-sec);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .udid-hero__badge {
+      background: var(--brand);
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    /* The UDID code block */
+    .udid-hero__code-wrap {
+      padding: 18px 20px 14px;
+    }
+
+    .udid-hero__label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .udid-hero__chars {
+      font-size: 10px;
+      color: var(--txt-muted);
+      font-family: ui-monospace, monospace;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .udid-hero__code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--txt);
+      word-break: break-all;
+      user-select: all;
+      letter-spacing: 0.025em;
+      line-height: 1.6;
+      display: block;
+      background: var(--bg-muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    /* Primary copy button */
+    .udid-hero__copy-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--brand-light), var(--brand-dark));
+      color: #fff;
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 15px 20px;
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-btn);
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.18s, filter 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .udid-hero__copy-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.12), transparent);
+      pointer-events: none;
+    }
+
+    .udid-hero__copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(234,86,38,0.45);
+      filter: brightness(1.06);
+    }
+
+    .udid-hero__copy-btn:active { transform: scale(0.97); }
+
+    .udid-hero__copy-btn.copied {
+      background: linear-gradient(135deg, #34d36e, #16a34a);
+      box-shadow: 0 6px 22px rgba(34,197,94,0.35);
+    }
+
+    /* Secondary actions row */
+    .udid-actions-row {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 18px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .udid-action-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border);
+      color: var(--txt-sec);
+      border-radius: 10px;
+      padding: 9px 6px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .udid-action-btn:hover {
+      background: rgba(234,86,38,0.08);
+      border-color: rgba(234,86,38,0.2);
+      color: var(--brand);
+    }
+
+    /* QR wrap */
+    .qr-section {
+      background: var(--bg-card);
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp 0.25s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .qr-section__label {
+      font-size: 12px;
+      color: var(--txt-sec);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* Device info card */
+    .device-info-card {
+      background: var(--bg-card);
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .device-info-card__header {
+      padding: 14px 18px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .device-info-card__title {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brand);
+    }
+
+    .device-info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .device-info-table td {
+      padding: 11px 18px;
+      font-size: 13.5px;
+      border-bottom: 1px solid var(--bg-muted);
+    }
+
+    .device-info-table tr:last-child td { border-bottom: none; }
+
+    .device-info-table td:first-child {
+      color: var(--txt-sec);
+      font-weight: 400;
+      width: 46%;
+    }
+
+    .device-info-table td.val {
+      text-align: right;
+      color: var(--txt);
+      font-weight: 600;
+    }
+
+    /* Shortcut guide card — on result page */
+    .shortcut-guide {
+      background: var(--bg-card);
+      border-radius: var(--r-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .shortcut-guide__header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid transparent;
+      cursor: pointer;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.2s;
+    }
+
+    .shortcut-guide.open .shortcut-guide__header {
+      border-bottom-color: var(--border);
+    }
+
+    .shortcut-guide__header:hover {
+      background: rgba(234,86,38,0.04);
+    }
+
+    .shortcut-guide__icon {
+      width: 38px; height: 38px;
+      border-radius: 11px;
+      background: rgba(234,86,38,0.10);
+      border: 1px solid rgba(234,86,38,0.18);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .shortcut-guide__meta { flex: 1; }
+
+    .shortcut-guide__meta-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--txt);
+      letter-spacing: -0.01em;
+    }
+
+    .shortcut-guide__meta-note {
+      font-size: 12px;
+      color: var(--txt-muted);
+      margin-top: 1px;
+    }
+
+    .shortcut-guide__chevron {
+      color: var(--txt-muted);
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .shortcut-guide.open .shortcut-guide__chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Collapsible guide steps */
+    .shortcut-guide__body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .shortcut-guide.open .shortcut-guide__body {
+      max-height: 600px;
+    }
+
+    .shortcut-guide__steps {
+      padding: 14px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sg-step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .sg-step__num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-light), var(--brand-dark));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      box-shadow: 0 2px 8px var(--brand-glow);
+    }
+
+    .sg-step__text {
+      font-size: 13.5px;
+      color: var(--txt-sec);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .sg-step__text strong { color: var(--txt); font-weight: 600; }
+
+    /* Inline tag (like system UI label) */
+    .ios-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--txt);
+      vertical-align: middle;
+    }
+
+    /* Action buttons at bottom */
+    .result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -30,109 +428,108 @@
   ══════════════════════ -->
   <div id="found-block" hidden>
 
-    <!-- Dark hero -->
+    <!-- Dark hero: success -->
     <section class="result-hero">
       <div class="result-hero__inner">
         <div class="result-icon result-icon--success">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
         </div>
-        <h1>Đã lấy được UDID!</h1>
-        <p class="subtitle">Mã định danh thiết bị để đăng ký kiểm thử ứng dụng.</p>
+        <h1>Lấy UDID thành công!</h1>
+        <p class="subtitle">Sao chép mã bên dưới và gửi cho quản trị viên để đăng ký kiểm thử.</p>
       </div>
     </section>
 
     <!-- Content -->
     <div class="content">
 
-      <!-- Device chip -->
-      <div class="device-chip">
-        <div class="device-chip__icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
-            <line x1="12" y1="18" x2="12.01" y2="18"/>
-          </svg>
-        </div>
-        <div>
-          <div id="disp-product" class="device-chip__model">{{PRODUCT}}</div>
-          <div class="device-chip__version">
-            <span>Phiên bản:</span>
-            <span id="disp-version-pill" class="badge-ver">iOS {{VERSION}}</span>
+      <!-- ── UDID Hero Card ── -->
+      <div class="udid-hero">
+        <!-- Device info bar -->
+        <div class="udid-hero__top">
+          <div class="udid-hero__device-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
+              <line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          </div>
+          <div class="udid-hero__device-info">
+            <div id="disp-product" class="udid-hero__model">{{PRODUCT}}</div>
+            <div class="udid-hero__ver">
+              <span>iOS</span>
+              <span id="disp-version-pill" class="udid-hero__badge">{{VERSION}}</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- UDID box -->
-      <div class="udid-section">
-        <div class="udid-label-row">
-          <span class="udid-label">Mã UDID</span>
-          <span id="udid-chars" class="udid-chars"></span>
-        </div>
-        <div class="udid-box">
-          <code id="udid-value">{{UDID}}</code>
-          <div class="udid-actions">
-            <button id="btn-copy" class="btn-copy" type="button">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-              </svg>
-              <span id="btn-copy-text">Sao chép UDID</span>
-            </button>
-
-            <button id="btn-copy-all" class="btn-sub" type="button">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-              </svg>
-              Tất cả
-            </button>
-
-            <button id="btn-share" class="btn-sub" type="button">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="18" cy="5" r="3"/>
-                <circle cx="6" cy="12" r="3"/>
-                <circle cx="18" cy="19" r="3"/>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-              </svg>
-              Chia sẻ
-            </button>
-
-            <button id="btn-toggle-qr" class="btn-sub" type="button">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7"/>
-                <rect x="14" y="3" width="7" height="7"/>
-                <rect x="14" y="14" width="7" height="7"/>
-                <rect x="3" y="14" width="7" height="7"/>
-              </svg>
-              <span id="btn-toggle-qr-text">Mã QR</span>
-            </button>
+        <!-- UDID code -->
+        <div class="udid-hero__code-wrap">
+          <div class="udid-hero__label">
+            <span>Mã UDID</span>
+            <span id="udid-chars" class="udid-hero__chars"></span>
           </div>
+          <code id="udid-value" class="udid-hero__code">{{UDID}}</code>
+
+          <!-- Primary copy button -->
+          <button id="btn-copy" class="udid-hero__copy-btn" type="button">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="btn-copy-text">Sao chép UDID</span>
+          </button>
         </div>
-        <p id="copy-feedback" class="copy-feedback" hidden>✓ Đã sao chép vào bộ nhớ tạm!</p>
+
+        <!-- Secondary actions row -->
+        <div class="udid-actions-row">
+          <button id="btn-copy-all" class="udid-action-btn" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Sao chép tất cả
+          </button>
+          <button id="btn-share" class="udid-action-btn" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            Chia sẻ
+          </button>
+          <button id="btn-toggle-qr" class="udid-action-btn" type="button">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <span id="btn-toggle-qr-text">QR Code</span>
+          </button>
+        </div>
       </div>
 
-      <!-- QR code -->
-      <div id="qr-container" class="qr-wrap" hidden>
-        <p class="qr-label">Quét mã để chuyển UDID sang máy tính</p>
-        <div id="qr-canvas-wrapper" class="qr-canvas-box"></div>
+      <!-- QR code (hidden by default) -->
+      <div id="qr-container" class="qr-section" hidden>
+        <p class="qr-section__label">Quét bằng máy tính để chuyển UDID</p>
+        <div id="qr-canvas-wrapper" style="background:#fff;padding:12px;border-radius:12px;box-shadow:var(--shadow-card)"></div>
       </div>
 
-      <!-- Device details -->
-      <div class="device-info">
-        <h3>Thông tin thiết bị</h3>
-        <table class="info-table">
+      <!-- ── Device Info Card ── -->
+      <div class="device-info-card">
+        <div class="device-info-card__header">
+          <span class="device-info-card__title">Thông tin thiết bị</span>
+        </div>
+        <table class="device-info-table">
           <tbody>
             <tr>
-              <td>Model thiết bị</td>
+              <td>Model</td>
               <td class="val"><strong id="table-product">{{PRODUCT}}</strong></td>
             </tr>
             <tr id="row-raw-product">
@@ -140,7 +537,7 @@
               <td class="val"><code class="inline-code">{{RAW_PRODUCT}}</code></td>
             </tr>
             <tr>
-              <td>Phiên bản (Build)</td>
+              <td>Phiên bản iOS</td>
               <td class="val">{{VERSION}}</td>
             </tr>
             <tr>
@@ -151,14 +548,99 @@
         </table>
       </div>
 
-      <!-- Back home -->
-      <a href="/" class="btn-secondary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m15 18-6-6 6-6"/>
-        </svg>
-        Về trang chủ
-      </a>
+      <!-- ── Thêm vào Màn hình chính — same style as .how guide card ── -->
+      <div class="how">
+        <p class="section-label">Mẹo hay</p>
+        <h2 class="how__title">Thêm vào Màn hình chính</h2>
+        <p class="how__note">Bấm icon trên màn hình để mở Safari nhanh hơn những lần sau</p>
+
+        <div class="timeline" id="shortcut-timeline">
+
+          <!-- Step 1 -->
+          <div class="tl-item active" data-step="sc1">
+            <div class="tl-left">
+              <button class="tl-num" type="button" aria-expanded="true">1</button>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-right">
+              <button class="tl-header" type="button">
+                <span class="tl-title">Bấm nút Chia sẻ trong Safari</span>
+                <svg class="tl-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
+              <div class="tl-body">
+                <p>Bấm biểu tượng <strong>Chia sẻ <span class="ios-tag" style="font-size:11px;padding:1px 6px">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
+                  </svg> Share</span></strong> ở thanh công cụ phía <strong>dưới cùng</strong> của Safari.</p>
+                <div class="tl-img">
+                  <img src="/img/home-step1.png" alt="Bước 1: Bấm nút Chia sẻ trong Safari" width="393" height="440" loading="lazy">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="tl-item" data-step="sc2">
+            <div class="tl-left">
+              <button class="tl-num" type="button" aria-expanded="false">2</button>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-right">
+              <button class="tl-header" type="button">
+                <span class="tl-title">Chọn "Thêm vào Màn hình chính"</span>
+                <svg class="tl-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
+              <div class="tl-body">
+                <p>Cuộn xuống trong menu chia sẻ, tìm và chọn <strong>"Thêm vào Màn hình chính"</strong> <span class="ios-tag" style="font-size:11px;padding:1px 6px">Add to Home Screen</span>.</p>
+                <div class="tl-img">
+                  <img src="/img/home-step2.png" alt="Bước 2: Chọn Thêm vào Màn hình chính" width="393" height="440" loading="lazy">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="tl-item" data-step="sc3">
+            <div class="tl-left">
+              <button class="tl-num" type="button" aria-expanded="false">3</button>
+              <!-- No line after last step -->
+            </div>
+            <div class="tl-right">
+              <button class="tl-header" type="button">
+                <span class="tl-title">Bấm "Thêm" để xác nhận 🎉</span>
+                <svg class="tl-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
+              <div class="tl-body">
+                <p>Bấm <strong>"Thêm"</strong> (Add) ở góc trên phải. Icon <strong>Lấy UDID</strong> sẽ xuất hiện trên màn hình chính và <strong>luôn mở bằng Safari</strong> — không phải webview.</p>
+                <div class="tl-img">
+                  <img src="/img/home-step3.png" alt="Bước 3: Bấm Thêm ở góc trên bên phải" width="393" height="440" loading="lazy">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /shortcut-timeline -->
+      </div><!-- /how -->
+
+      <!-- ── Bottom Actions ── -->
+      <div class="result-actions">
+        <a href="/" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Về trang chủ
+        </a>
+      </div>
 
     </div><!-- /content -->
   </div><!-- /found-block -->
@@ -172,7 +654,7 @@
     <section class="result-hero error">
       <div class="result-hero__inner">
         <div class="result-icon result-icon--error">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
             <line x1="12" y1="8" x2="12" y2="12"/>
@@ -180,21 +662,54 @@
           </svg>
         </div>
         <h1>Không tìm thấy kết quả</h1>
-        <p class="subtitle">Phiên làm việc đã hết hạn (sau 5 phút), kết quả đã được đọc hoặc quá trình cài đặt hồ sơ chưa hoàn tất.</p>
+        <p class="subtitle">Phiên làm việc đã hết hạn hoặc quá trình cài đặt hồ sơ chưa hoàn tất.</p>
       </div>
     </section>
 
     <div class="content">
-      <a href="/" class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="1 4 1 10 7 10"/>
-          <path d="M3.51 15a9 9 0 1 0 .49-3.88"/>
-        </svg>
-        Thử lại ngay
-      </a>
-    </div>
 
+      <!-- What to do next -->
+      <div class="device-info-card">
+        <div class="device-info-card__header">
+          <span class="device-info-card__title">Nguyên nhân thường gặp</span>
+        </div>
+        <div style="padding: 14px 18px; display: flex; flex-direction: column; gap: 12px;">
+          <div class="sg-step">
+            <div class="sg-step__num" style="background: linear-gradient(135deg,#f59e0b,#d97706); box-shadow: 0 2px 8px rgba(245,158,11,0.3)">!</div>
+            <div class="sg-step__text">Phiên hết hạn sau <strong>10 phút</strong> — hãy thực hiện lại ngay.</div>
+          </div>
+          <div class="sg-step">
+            <div class="sg-step__num" style="background: linear-gradient(135deg,#f59e0b,#d97706); box-shadow: 0 2px 8px rgba(245,158,11,0.3)">!</div>
+            <div class="sg-step__text">Chưa bấm <strong>Cài đặt</strong> hồ sơ trong Settings — kiểm tra lại.</div>
+          </div>
+          <div class="sg-step">
+            <div class="sg-step__num" style="background: linear-gradient(135deg,#f59e0b,#d97706); box-shadow: 0 2px 8px rgba(245,158,11,0.3)">!</div>
+            <div class="sg-step__text">Đã từ chối tải profile — bấm <strong>Thử lại</strong> và chọn Cho phép.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <a href="/" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"/>
+            <path d="M3.51 15a9 9 0 1 0 .49-3.88"/>
+          </svg>
+          Thử lại ngay
+        </a>
+
+        <a href="/result?demo=1" id="btn-view-demo" class="btn-primary" style="background: var(--bg-card); color: var(--txt-sec); border: 1px solid var(--border); box-shadow: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
+          </svg>
+          Xem thử giao diện mẫu (Demo Mode)
+        </a>
+      </div>
+
+    </div>
   </div><!-- /notfound-block -->
 
   <!-- Footer -->
@@ -203,7 +718,7 @@
       <span class="footer__brand-dot"></span>
       <span class="footer__brand-name">SOFTDREAMS</span>
     </div>
-    <p class="footer__text">Hỗ trợ iPhone và iPad chạy iOS 12 trở lên</p>
+    <p class="footer__text">Hỗ trợ iPhone và iPad chạy iOS 15 trở lên</p>
   </footer>
 
 </div><!-- /page -->
@@ -218,16 +733,34 @@
 </div>
 
 <script>
-  const found         = '{{FOUND}}' === 'true';
+  const urlParams     = new URLSearchParams(window.location.search);
+  const isDemo        = urlParams.get('demo') === '1' || urlParams.get('mock') === '1';
+
+  let found           = '{{FOUND}}' === 'true' || isDemo;
   const foundBlock    = document.getElementById('found-block');
   const notFoundBlock = document.getElementById('notfound-block');
   if (found && foundBlock)     foundBlock.hidden    = false;
   if (!found && notFoundBlock) notFoundBlock.hidden = false;
 
-  const rawProduct = '{{PRODUCT}}'.trim();
-  const rawModelId = '{{RAW_PRODUCT}}'.trim();
-  const rawVersion = '{{VERSION}}'.trim();
-  const rawUDID    = document.getElementById('udid-value')?.textContent.trim() || '';
+  let rawProduct = '{{PRODUCT}}'.trim();
+  let rawModelId = '{{RAW_PRODUCT}}'.trim();
+  let rawVersion = '{{VERSION}}'.trim();
+  let rawUDID    = document.getElementById('udid-value')?.textContent.trim() || '';
+
+  // Fallback nếu mở trực tiếp bằng file HTML hoặc server chưa replace
+  if (isDemo && (!rawUDID || rawUDID.includes('{{'))) {
+    rawUDID = '00008110-001234560E02801E';
+    rawProduct = rawProduct && !rawProduct.includes('{{') ? rawProduct : 'iPhone 15 Pro';
+    rawModelId = rawModelId && !rawModelId.includes('{{') ? rawModelId : 'iPhone16,1';
+    rawVersion = rawVersion && !rawVersion.includes('{{') ? rawVersion : '17.5.1';
+
+    const udidEl = document.getElementById('udid-value');
+    if (udidEl) udidEl.textContent = rawUDID;
+    const rawEl = document.querySelector('#row-raw-product .val code');
+    if (rawEl) rawEl.textContent = rawModelId;
+    const verEl = document.querySelector('.device-info-table tr:nth-child(3) .val');
+    if (verEl) verEl.textContent = rawVersion;
+  }
 
   // Populate device info
   const dispProduct = document.getElementById('disp-product');
@@ -237,7 +770,7 @@
   if (rowRaw && (!rawModelId || rawModelId === rawProduct)) rowRaw.hidden = true;
 
   const dispVer = document.getElementById('disp-version-pill');
-  if (dispVer) dispVer.textContent = rawVersion ? `Build ${rawVersion}` : 'iOS';
+  if (dispVer) dispVer.textContent = rawVersion || 'iOS';
 
   const charCount = document.getElementById('udid-chars');
   if (charCount && rawUDID) charCount.textContent = `${rawUDID.length} ký tự`;
@@ -278,17 +811,14 @@
   // Btn 1: Copy UDID
   const btnCopy = document.getElementById('btn-copy');
   const btnText = document.getElementById('btn-copy-text');
-  const feedback = document.getElementById('copy-feedback');
   if (btnCopy) {
     btnCopy.addEventListener('click', async () => {
       const ok = await copyToClipboard(rawUDID);
       if (ok) {
-        if (feedback) feedback.hidden = false;
         if (btnText) btnText.textContent = 'Đã sao chép ✓';
         btnCopy.classList.add('copied');
         showToast('✓ Đã sao chép mã UDID!');
         setTimeout(() => {
-          if (feedback) feedback.hidden = true;
           if (btnText) btnText.textContent = 'Sao chép UDID';
           btnCopy.classList.remove('copied');
         }, 2200);
@@ -303,7 +833,7 @@
       const modelLine = rawProduct
         ? `Thiết bị: ${rawProduct}${rawModelId && rawModelId !== rawProduct ? ` (${rawModelId})` : ''}`
         : '';
-      const all = [modelLine, rawVersion ? `iOS Build: ${rawVersion}` : '', `UDID: ${rawUDID}`]
+      const all = [modelLine, rawVersion ? `iOS: ${rawVersion}` : '', `UDID: ${rawUDID}`]
         .filter(Boolean).join('\n');
       if (await copyToClipboard(all)) showToast('✓ Đã sao chép tất cả thông tin!');
     });
@@ -315,7 +845,10 @@
     btnShare.addEventListener('click', async () => {
       if (navigator.share) {
         try {
-          await navigator.share({ title: 'iOS UDID — SoftDreams', text: `UDID ${rawProduct || 'iOS'}: ${rawUDID}` });
+          await navigator.share({
+            title: 'iOS UDID — SoftDreams',
+            text: `UDID ${rawProduct || 'iOS'}: ${rawUDID}`
+          });
         } catch {}
       } else {
         if (await copyToClipboard(`UDID: ${rawUDID}`)) showToast('✓ Đã sao chép UDID!');
@@ -333,17 +866,49 @@
       const hidden = qrBox.hidden;
       qrBox.hidden = !hidden;
       const t = document.getElementById('btn-toggle-qr-text');
-      if (t) t.textContent = hidden ? 'Ẩn mã QR' : 'Mã QR';
+      if (t) t.textContent = hidden ? 'Ẩn QR' : 'QR Code';
       if (hidden && !qrDone && typeof QRCanvas !== 'undefined' && qrWrap && rawUDID) {
         try {
           const c = QRCanvas.qrCanvas(rawUDID, { scale: 5, margin: 2 });
-          c.style.maxWidth = '100%'; c.style.height = 'auto'; c.style.borderRadius = '8px';
+          c.style.cssText = 'max-width:100%;height:auto;border-radius:8px;display:block';
           qrWrap.appendChild(c);
           qrDone = true;
         } catch(e) { console.error('QR error:', e); }
       }
     });
   }
+
+  // Shortcut timeline accordion (same logic as main guide)
+  const scItems = document.querySelectorAll('#shortcut-timeline .tl-item');
+
+  function openScStep(targetItem) {
+    scItems.forEach(item => {
+      const isTarget = item === targetItem;
+      item.classList.toggle('active', isTarget);
+      const nb = item.querySelector('.tl-num');
+      if (nb) nb.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
+    });
+    setTimeout(() => {
+      targetItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 80);
+  }
+
+  scItems.forEach(item => {
+    const numBtn = item.querySelector('.tl-num');
+    const header = item.querySelector('.tl-header');
+    [numBtn, header].forEach(btn => {
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        if (isActive) {
+          item.classList.remove('active');
+          numBtn?.setAttribute('aria-expanded', 'false');
+        } else {
+          openScStep(item);
+        }
+      });
+    });
+  });
 </script>
 
 </body>

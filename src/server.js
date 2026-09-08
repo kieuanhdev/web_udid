@@ -159,10 +159,21 @@ async function handleCallback(req, res) {
 
 async function handleResult(req, res, url) {
   const token = url.searchParams.get('t');
-  const html = await readFile(path.join(PUBLIC_DIR, 'result.html'), 'utf8');
+  const isDemo = url.searchParams.get('demo') === '1' || url.searchParams.get('mock') === '1';
 
-  const data = token ? getResult(token) : null;
+  let data = token ? getResult(token) : null;
+  if (!data && isDemo) {
+    data = {
+      udid: '00008110-001234560E02801E',
+      product: 'iPhone16,1',
+      version: '17.5.1',
+      serial: 'F17DTEST0001',
+    };
+  }
+
   const friendlyModel = data?.product ? getDeviceModelName(data.product) : '';
+
+  const html = await readFile(path.join(PUBLIC_DIR, 'result.html'), 'utf8');
 
   const rendered = html
     .replaceAll('{{FOUND}}', data ? 'true' : 'false')

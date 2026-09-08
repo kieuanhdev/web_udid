@@ -61,7 +61,7 @@ try {
   });
   assert.strictEqual(homeRes.status, 200);
   assert.ok(homeRes.body.includes('Lấy UDID thiết bị iOS'), 'Trang chủ phải chứa tiêu đề chính');
-  assert.ok(homeRes.body.includes('step1.svg'), 'Trang chủ phải chứa ảnh minh họa step1.svg');
+  assert.ok(homeRes.body.includes('step1.png'), 'Trang chủ phải chứa ảnh minh họa step1.png');
   assert.ok(homeRes.body.includes('/enroll?t='), 'Trang chủ phải chứa link enroll kèm token');
   assert.ok(
     homeRes.body.includes("isSafariIOS = 'true' === 'true'") || homeRes.body.includes('isSafariIOS = true'),
@@ -99,14 +99,14 @@ try {
   assert.strictEqual(cssRes.headers.get('content-type'), 'text/css');
   console.log('✓ Phục vụ file CSS thành công!\n');
 
-  // 6. GET Static SVGs
-  console.log('[6/8] Kiểm tra GET /img/step1.svg đến step4.svg...');
+  // 6. GET Static Step Images
+  console.log('[6/8] Kiểm tra GET /img/step1.png đến step4.png...');
   for (let i = 1; i <= 4; i++) {
-    const svgRes = await request(`/img/step${i}.svg`);
-    assert.strictEqual(svgRes.status, 200);
-    assert.strictEqual(svgRes.headers.get('content-type'), 'image/svg+xml');
+    const pngRes = await request(`/img/step${i}.png`);
+    assert.strictEqual(pngRes.status, 200);
+    assert.strictEqual(pngRes.headers.get('content-type'), 'image/png');
   }
-  console.log('✓ Phục vụ đủ 4 hình ảnh minh họa SVG!\n');
+  console.log('✓ Phục vụ đủ 4 hình ảnh minh họa thực tế PNG!\n');
 
   // 7. GET Static icon.png
   console.log('[7/8] Kiểm tra GET /img/icon.png...');

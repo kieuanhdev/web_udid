@@ -854,25 +854,45 @@ body {
   line-height: 1.55;
 }
 
+
 /* ==========================================================================
-   WEBCLIP CARD
+   SHORTCUT GUIDE — Accordion (shared: index.html + result.html)
    ========================================================================== */
-.shortcut-card {
+.shortcut-guide {
   background: var(--bg-card);
   border-radius: var(--r-xl);
-  padding: 22px 24px;
-  box-shadow: var(--shadow-card);
   border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
 }
 
-.shortcut-card__icon {
-  width: 46px; height: 46px;
+.shortcut-guide__header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 20px;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.shortcut-guide.open .shortcut-guide__header {
+  border-bottom-color: var(--border);
+}
+
+.shortcut-guide__header:hover {
+  background: rgba(234,86,38,0.04);
+}
+
+.shortcut-guide__icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
   background: rgba(234,86,38,0.10);
   border: 1px solid rgba(234,86,38,0.18);
-  border-radius: 13px;
   color: var(--brand);
   display: flex;
   align-items: center;
@@ -880,47 +900,99 @@ body {
   flex-shrink: 0;
 }
 
-.shortcut-card__body {
-  flex: 1;
-  min-width: 0;
-}
+.shortcut-guide__meta { flex: 1; min-width: 0; }
 
-.shortcut-card__title {
+.shortcut-guide__meta-title {
   font-size: 14.5px;
   font-weight: 700;
   color: var(--txt);
   letter-spacing: -0.01em;
-  margin-bottom: 2px;
 }
 
-.shortcut-card__note {
+.shortcut-guide__meta-note {
   font-size: 12px;
   color: var(--txt-muted);
+  margin-top: 1px;
 }
 
-.shortcut-card__btn {
+.shortcut-guide__chevron {
+  color: var(--txt-muted);
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.shortcut-guide.open .shortcut-guide__chevron {
+  transform: rotate(180deg);
+}
+
+/* Collapsible body */
+.shortcut-guide__body {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+.shortcut-guide.open .shortcut-guide__body {
+  max-height: 500px;
+}
+
+.shortcut-guide__steps {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Step row */
+.sg-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.sg-step__num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-light), var(--brand-dark));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  box-shadow: 0 2px 8px var(--brand-glow);
+}
+
+.sg-step__text {
+  font-size: 13.5px;
+  color: var(--txt-sec);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.sg-step__text strong {
+  color: var(--txt);
+  font-weight: 600;
+}
+
+/* Inline iOS UI tag label */
+.ios-tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   background: var(--bg-muted);
   border: 1px solid var(--border);
-  color: var(--txt);
-  text-decoration: none;
-  font-family: inherit;
-  font-size: 13px;
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-size: 11.5px;
   font-weight: 600;
-  padding: 9px 16px;
-  border-radius: var(--r-sm);
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  color: var(--txt);
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-.shortcut-card__btn:hover {
-  background: rgba(234,86,38,0.08);
-  border-color: rgba(234,86,38,0.22);
-  color: var(--brand);
-}
 
 /* ==========================================================================
    FOOTER
