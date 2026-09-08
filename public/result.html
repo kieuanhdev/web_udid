@@ -3,245 +3,290 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Kết quả UDID thiết bị</title>
-  
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Kết quả UDID">
-  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <title>Kết quả UDID — SoftDreams</title>
+  <meta name="description" content="Mã UDID thiết bị iOS đã được lấy thành công. Sao chép và gửi cho quản trị viên.">
 
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kết quả UDID">
+  <meta name="theme-color" content="#0e0e10">
+
+  <link rel="icon" type="image/svg+xml" href="/img/icon.svg">
   <link rel="icon" type="image/png" href="/img/icon.png">
-  <link rel="apple-touch-icon" href="/img/icon.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script src="/img/qr-canvas.js"></script>
 </head>
+
 <body>
+<div class="page">
 
-<main class="container">
+  <!-- ══════════════════════
+       FOUND — Success state
+  ══════════════════════ -->
+  <div id="found-block" hidden>
 
-  <!-- Màn hình khi lấy thành công -->
-  <div id="found-block" class="result-card" hidden>
-    <div class="result-icon-success">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-        <polyline points="22 4 12 14.01 9 11.01"/>
-      </svg>
-    </div>
+    <!-- Dark hero -->
+    <section class="result-hero">
+      <div class="result-hero__inner">
+        <div class="result-icon result-icon--success">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h1>Đã lấy được UDID!</h1>
+        <p class="subtitle">Mã định danh thiết bị để đăng ký kiểm thử ứng dụng.</p>
+      </div>
+    </section>
 
-    <h1>Đã lấy được UDID!</h1>
-    <p class="subtitle">Mã định danh thiết bị dùng để đăng ký kiểm thử ứng dụng.</p>
+    <!-- Content -->
+    <div class="content">
 
-    <!-- Thẻ tóm tắt thiết bị -->
-    <div class="device-card-chip">
-      <div class="device-chip-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
-          <line x1="12" y1="18" x2="12.01" y2="18"/>
+      <!-- Device chip -->
+      <div class="device-chip">
+        <div class="device-chip__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="3" ry="3"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </div>
+        <div>
+          <div id="disp-product" class="device-chip__model">{{PRODUCT}}</div>
+          <div class="device-chip__version">
+            <span>Phiên bản:</span>
+            <span id="disp-version-pill" class="badge-ver">iOS {{VERSION}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- UDID box -->
+      <div class="udid-section">
+        <div class="udid-label-row">
+          <span class="udid-label">Mã UDID</span>
+          <span id="udid-chars" class="udid-chars"></span>
+        </div>
+        <div class="udid-box">
+          <code id="udid-value">{{UDID}}</code>
+          <div class="udid-actions">
+            <button id="btn-copy" class="btn-copy" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span id="btn-copy-text">Sao chép UDID</span>
+            </button>
+
+            <button id="btn-copy-all" class="btn-sub" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+              Tất cả
+            </button>
+
+            <button id="btn-share" class="btn-sub" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"/>
+                <circle cx="6" cy="12" r="3"/>
+                <circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Chia sẻ
+            </button>
+
+            <button id="btn-toggle-qr" class="btn-sub" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <span id="btn-toggle-qr-text">Mã QR</span>
+            </button>
+          </div>
+        </div>
+        <p id="copy-feedback" class="copy-feedback" hidden>✓ Đã sao chép vào bộ nhớ tạm!</p>
+      </div>
+
+      <!-- QR code -->
+      <div id="qr-container" class="qr-wrap" hidden>
+        <p class="qr-label">Quét mã để chuyển UDID sang máy tính</p>
+        <div id="qr-canvas-wrapper" class="qr-canvas-box"></div>
+      </div>
+
+      <!-- Device details -->
+      <div class="device-info">
+        <h3>Thông tin thiết bị</h3>
+        <table class="info-table">
+          <tbody>
+            <tr>
+              <td>Model thiết bị</td>
+              <td class="val"><strong id="table-product">{{PRODUCT}}</strong></td>
+            </tr>
+            <tr id="row-raw-product">
+              <td>Mã phần cứng</td>
+              <td class="val"><code class="inline-code">{{RAW_PRODUCT}}</code></td>
+            </tr>
+            <tr>
+              <td>Phiên bản (Build)</td>
+              <td class="val">{{VERSION}}</td>
+            </tr>
+            <tr>
+              <td>Hồ sơ cấu hình</td>
+              <td class="val" style="color:var(--green)">Đã tự động xóa ✓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Back home -->
+      <a href="/" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
         </svg>
-      </div>
-      <div class="device-chip-info">
-        <div id="disp-product" class="device-chip-model">{{PRODUCT}}</div>
-        <div class="device-chip-version">
-          <span>Phiên bản:</span>
-          <span id="disp-version-pill" class="badge-version">iOS {{VERSION}}</span>
+        Về trang chủ
+      </a>
+
+    </div><!-- /content -->
+  </div><!-- /found-block -->
+
+
+  <!-- ══════════════════════
+       NOT FOUND — Error state
+  ══════════════════════ -->
+  <div id="notfound-block" hidden>
+
+    <section class="result-hero error">
+      <div class="result-hero__inner">
+        <div class="result-icon result-icon--error">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
         </div>
+        <h1>Không tìm thấy kết quả</h1>
+        <p class="subtitle">Phiên làm việc đã hết hạn (sau 5 phút), kết quả đã được đọc hoặc quá trình cài đặt hồ sơ chưa hoàn tất.</p>
       </div>
+    </section>
+
+    <div class="content">
+      <a href="/" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-3.88"/>
+        </svg>
+        Thử lại ngay
+      </a>
     </div>
 
-    <!-- Khung hiển thị UDID -->
-    <div class="udid-container">
-      <div class="field-header">
-        <span class="field-label">MÃ UDID</span>
-        <span id="udid-chars" class="udid-char-count"></span>
-      </div>
-      <div class="udid-box">
-        <code id="udid-value">{{UDID}}</code>
-        
-        <div class="udid-actions-toolbar">
-          <button id="btn-copy" class="btn-copy" type="button" aria-label="Sao chép UDID">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-            </svg>
-            <span id="btn-copy-text">Sao chép UDID</span>
-          </button>
+  </div><!-- /notfound-block -->
 
-          <button id="btn-copy-all" class="btn-sub-copy" type="button" aria-label="Sao chép toàn bộ thông tin">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-            </svg>
-            <span>Sao chép tất cả</span>
-          </button>
-
-          <button id="btn-share" class="btn-sub-copy" type="button" aria-label="Chia sẻ UDID">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="5" r="3"/>
-              <circle cx="6" cy="12" r="3"/>
-              <circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-            </svg>
-            <span>Chia sẻ</span>
-          </button>
-
-          <button id="btn-toggle-qr" class="btn-sub-copy" type="button" aria-label="Hiện mã QR">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="7" height="7"/>
-              <rect x="14" y="3" width="7" height="7"/>
-              <rect x="14" y="14" width="7" height="7"/>
-              <rect x="3" y="14" width="7" height="7"/>
-            </svg>
-            <span id="btn-toggle-qr-text">Mã QR</span>
-          </button>
-        </div>
-      </div>
-      <p id="copy-feedback" class="feedback" hidden>✓ Đã sao chép vào bộ nhớ tạm!</p>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__brand">
+      <span class="footer__brand-dot"></span>
+      <span class="footer__brand-name">SOFTDREAMS</span>
     </div>
+    <p class="footer__text">Hỗ trợ iPhone và iPad chạy iOS 12 trở lên</p>
+  </footer>
 
-    <!-- Khung mã QR -->
-    <div id="qr-container" class="qr-container" hidden>
-      <div class="qr-title">Quét mã để chuyển UDID sang máy tính</div>
-      <div id="qr-canvas-wrapper" class="qr-canvas-wrapper"></div>
-    </div>
+</div><!-- /page -->
 
-    <!-- Chi tiết thông số máy -->
-    <div class="device-details">
-      <h3>Thông tin thiết bị</h3>
-      <table class="info-table">
-        <tbody>
-          <tr>
-            <td>Model thiết bị</td>
-            <td class="info-val"><strong id="table-product">{{PRODUCT}}</strong></td>
-          </tr>
-          <tr id="row-raw-product">
-            <td>Mã phần cứng</td>
-            <td class="info-val"><code class="inline-code">{{RAW_PRODUCT}}</code></td>
-          </tr>
-          <tr>
-            <td>Phiên bản (Build)</td>
-            <td class="info-val">{{VERSION}}</td>
-          </tr>
-          <tr>
-            <td>Hồ sơ cấu hình</td>
-            <td class="info-val" style="color: var(--apple-green)">Đã tự động xóa</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="actions">
-      <a href="/" class="btn-secondary">Về trang chủ</a>
-    </div>
-  </div>
-
-  <!-- Màn hình khi token hết hạn / không tìm thấy -->
-  <div id="notfound-block" class="result-card" hidden>
-    <div class="result-icon-error">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
-      </svg>
-    </div>
-
-    <h1>Không tìm thấy kết quả</h1>
-    <p class="subtitle">Phiên làm việc đã hết hạn (sau 5 phút), kết quả đã được đọc hoặc quá trình cài đặt hồ sơ chưa hoàn tất.</p>
-
-    <div class="actions">
-      <a href="/" class="btn-primary">Thử lại ngay</a>
-    </div>
-  </div>
-
-</main>
-
-<!-- Floating Toast -->
-<div id="toast-notice" class="toast-notice" role="status" aria-live="polite">
-  <svg class="toast-icon-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<!-- Toast -->
+<div id="toast-notice" class="toast" role="status" aria-live="polite">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="20 6 9 17 4 12"/>
   </svg>
   <span id="toast-text">Đã sao chép!</span>
 </div>
 
 <script>
-  const found = '{{FOUND}}' === 'true';
-  const foundBlock = document.getElementById('found-block');
+  const found         = '{{FOUND}}' === 'true';
+  const foundBlock    = document.getElementById('found-block');
   const notFoundBlock = document.getElementById('notfound-block');
-  if (found && foundBlock) foundBlock.hidden = false;
+  if (found && foundBlock)     foundBlock.hidden    = false;
   if (!found && notFoundBlock) notFoundBlock.hidden = false;
 
   const rawProduct = '{{PRODUCT}}'.trim();
   const rawModelId = '{{RAW_PRODUCT}}'.trim();
   const rawVersion = '{{VERSION}}'.trim();
-  const rawUDID = document.getElementById('udid-value')?.textContent.trim() || '';
+  const rawUDID    = document.getElementById('udid-value')?.textContent.trim() || '';
 
+  // Populate device info
   const dispProduct = document.getElementById('disp-product');
-  if (dispProduct) {
-    dispProduct.textContent = rawProduct || 'Thiết bị Apple';
-  }
+  if (dispProduct) dispProduct.textContent = rawProduct || 'Thiết bị Apple';
 
-  const rowRawProduct = document.getElementById('row-raw-product');
-  if (rowRawProduct && (!rawModelId || rawModelId === rawProduct)) {
-    rowRawProduct.hidden = true;
-  }
+  const rowRaw = document.getElementById('row-raw-product');
+  if (rowRaw && (!rawModelId || rawModelId === rawProduct)) rowRaw.hidden = true;
 
-  const dispVersionPill = document.getElementById('disp-version-pill');
-  if (dispVersionPill) {
-    dispVersionPill.textContent = rawVersion ? `Build ${rawVersion}` : 'iOS';
-  }
+  const dispVer = document.getElementById('disp-version-pill');
+  if (dispVer) dispVer.textContent = rawVersion ? `Build ${rawVersion}` : 'iOS';
 
-  const charCounter = document.getElementById('udid-chars');
-  if (charCounter && rawUDID) {
-    charCounter.textContent = `${rawUDID.length} ký tự`;
-  }
+  const charCount = document.getElementById('udid-chars');
+  if (charCount && rawUDID) charCount.textContent = `${rawUDID.length} ký tự`;
 
+  const tableProduct = document.getElementById('table-product');
+  if (tableProduct) tableProduct.textContent = rawProduct || 'Thiết bị Apple';
+
+  // Toast helper
   function showToast(msg) {
-    const toast = document.getElementById('toast-notice');
-    const text = document.getElementById('toast-text');
-    if (text) text.textContent = msg;
-    if (toast) {
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2400);
+    const t = document.getElementById('toast-notice');
+    const s = document.getElementById('toast-text');
+    if (s) s.textContent = msg;
+    if (t) {
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
     }
   }
 
+  // Clipboard helper
   async function copyToClipboard(text) {
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
       } else {
         const ta = document.createElement('textarea');
         ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
+        ta.style.cssText = 'position:fixed;opacity:0';
         document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
+        ta.focus(); ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
       }
       if (navigator.vibrate) navigator.vibrate(10);
       return true;
-    } catch {
-      return false;
-    }
+    } catch { return false; }
   }
 
-  // Nút 1: Sao chép UDID
+  // Btn 1: Copy UDID
   const btnCopy = document.getElementById('btn-copy');
   const btnText = document.getElementById('btn-copy-text');
   const feedback = document.getElementById('copy-feedback');
-
   if (btnCopy) {
     btnCopy.addEventListener('click', async () => {
       const ok = await copyToClipboard(rawUDID);
       if (ok) {
         if (feedback) feedback.hidden = false;
-        if (btnText) btnText.textContent = 'Đã sao chép';
+        if (btnText) btnText.textContent = 'Đã sao chép ✓';
         btnCopy.classList.add('copied');
         showToast('✓ Đã sao chép mã UDID!');
-
         setTimeout(() => {
           if (feedback) feedback.hidden = true;
           if (btnText) btnText.textContent = 'Sao chép UDID';
@@ -251,70 +296,51 @@
     });
   }
 
-  // Nút 2: Sao chép tất cả
+  // Btn 2: Copy all
   const btnCopyAll = document.getElementById('btn-copy-all');
   if (btnCopyAll) {
     btnCopyAll.addEventListener('click', async () => {
       const modelLine = rawProduct
         ? `Thiết bị: ${rawProduct}${rawModelId && rawModelId !== rawProduct ? ` (${rawModelId})` : ''}`
         : '';
-      const allText = [
-        modelLine,
-        rawVersion ? `iOS (Build): ${rawVersion}` : '',
-        `UDID: ${rawUDID}`
-      ].filter(Boolean).join('\n');
-
-      const ok = await copyToClipboard(allText);
-      if (ok) {
-        showToast('✓ Đã sao chép tất cả thông tin!');
-      }
+      const all = [modelLine, rawVersion ? `iOS Build: ${rawVersion}` : '', `UDID: ${rawUDID}`]
+        .filter(Boolean).join('\n');
+      if (await copyToClipboard(all)) showToast('✓ Đã sao chép tất cả thông tin!');
     });
   }
 
-  // Nút 3: Chia sẻ
+  // Btn 3: Share
   const btnShare = document.getElementById('btn-share');
   if (btnShare) {
     btnShare.addEventListener('click', async () => {
       if (navigator.share) {
         try {
-          await navigator.share({
-            title: 'iOS UDID',
-            text: `UDID thiết bị ${rawProduct || 'iOS'}: ${rawUDID}`,
-          });
+          await navigator.share({ title: 'iOS UDID — SoftDreams', text: `UDID ${rawProduct || 'iOS'}: ${rawUDID}` });
         } catch {}
       } else {
-        await copyToClipboard(`UDID: ${rawUDID}`);
-        showToast('✓ Đã sao chép UDID!');
+        if (await copyToClipboard(`UDID: ${rawUDID}`)) showToast('✓ Đã sao chép UDID!');
       }
     });
   }
 
-  // Nút 4: Toggle QR
-  const btnToggleQR = document.getElementById('btn-toggle-qr');
-  const qrContainer = document.getElementById('qr-container');
-  const qrWrapper = document.getElementById('qr-canvas-wrapper');
-  let qrGenerated = false;
-
-  if (btnToggleQR && qrContainer) {
-    btnToggleQR.addEventListener('click', () => {
-      const isHidden = qrContainer.hidden;
-      qrContainer.hidden = !isHidden;
-      const btnToggleText = document.getElementById('btn-toggle-qr-text');
-      if (btnToggleText) {
-        btnToggleText.textContent = isHidden ? 'Ẩn mã QR' : 'Mã QR';
-      }
-
-      if (isHidden && !qrGenerated && typeof QRCanvas !== 'undefined' && qrWrapper && rawUDID) {
+  // Btn 4: QR Toggle
+  const btnQR = document.getElementById('btn-toggle-qr');
+  const qrBox = document.getElementById('qr-container');
+  const qrWrap = document.getElementById('qr-canvas-wrapper');
+  let qrDone = false;
+  if (btnQR && qrBox) {
+    btnQR.addEventListener('click', () => {
+      const hidden = qrBox.hidden;
+      qrBox.hidden = !hidden;
+      const t = document.getElementById('btn-toggle-qr-text');
+      if (t) t.textContent = hidden ? 'Ẩn mã QR' : 'Mã QR';
+      if (hidden && !qrDone && typeof QRCanvas !== 'undefined' && qrWrap && rawUDID) {
         try {
-          const canvas = QRCanvas.qrCanvas(rawUDID, { scale: 5, margin: 2 });
-          canvas.style.maxWidth = '100%';
-          canvas.style.height = 'auto';
-          canvas.style.borderRadius = '8px';
-          qrWrapper.appendChild(canvas);
-          qrGenerated = true;
-        } catch (e) {
-          console.error('Lỗi QR:', e);
-        }
+          const c = QRCanvas.qrCanvas(rawUDID, { scale: 5, margin: 2 });
+          c.style.maxWidth = '100%'; c.style.height = 'auto'; c.style.borderRadius = '8px';
+          qrWrap.appendChild(c);
+          qrDone = true;
+        } catch(e) { console.error('QR error:', e); }
       }
     });
   }

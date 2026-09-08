@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Main gradient: SoftDreams orange-red -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f06030;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#c94518;stop-opacity:1"/>
+    </linearGradient>
+    <!-- Inner highlight -->
+    <radialGradient id="shine" cx="30%" cy="20%" r="55%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.18"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    <!-- White glow for phone -->
+    <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="110" ry="110" fill="url(#bgGrad)"/>
+  <!-- Shine overlay -->
+  <rect width="512" height="512" rx="110" ry="110" fill="url(#shine)"/>
+
+  <!-- iPhone silhouette: body -->
+  <rect x="163" y="96" width="186" height="310" rx="30" ry="30"
+        fill="none" stroke="white" stroke-width="14" opacity="1"/>
+
+  <!-- iPhone: home button area (notch style) -->
+  <rect x="220" y="108" width="72" height="10" rx="5" ry="5"
+        fill="white" opacity="0.7"/>
+
+  <!-- iPhone: bottom home indicator -->
+  <rect x="226" y="383" width="60" height="7" rx="3.5" ry="3.5"
+        fill="white" opacity="0.7"/>
+
+  <!-- UDID barcode lines inside phone screen -->
+  <!-- Screen area bg -->
+  <rect x="177" y="130" width="158" height="238" rx="6" ry="6"
+        fill="white" opacity="0.10"/>
+
+  <!-- Chip/ID card icon centered -->
+  <!-- Chip body -->
+  <rect x="215" y="205" width="82" height="82" rx="10" ry="10"
+        fill="none" stroke="white" stroke-width="10"/>
+  <!-- Chip inner square -->
+  <rect x="233" y="223" width="46" height="46" rx="5" ry="5"
+        fill="white" opacity="0.85"/>
+
+  <!-- Chip connector lines - top -->
+  <line x1="238" y1="205" x2="238" y2="188" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="256" y1="205" x2="256" y2="188" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="274" y1="205" x2="274" y2="188" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <!-- Chip connector lines - bottom -->
+  <line x1="238" y1="287" x2="238" y2="304" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="256" y1="287" x2="256" y2="304" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="274" y1="287" x2="274" y2="304" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <!-- Chip connector lines - left -->
+  <line x1="215" y1="226" x2="198" y2="226" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="215" y1="246" x2="198" y2="246" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="215" y1="266" x2="198" y2="266" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <!-- Chip connector lines - right -->
+  <line x1="297" y1="226" x2="314" y2="226" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="297" y1="246" x2="314" y2="246" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="297" y1="266" x2="314" y2="266" stroke="white" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Barcode-like UDID lines at bottom of screen -->
+  <rect x="192" y="320" width="6" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="203" y="320" width="3" height="24" rx="1.5" fill="white" opacity="0.9"/>
+  <rect x="211" y="320" width="8" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="224" y="320" width="4" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="233" y="320" width="6" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="244" y="320" width="3" height="24" rx="1.5" fill="white" opacity="0.9"/>
+  <rect x="252" y="320" width="8" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="265" y="320" width="4" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="274" y="320" width="6" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="285" y="320" width="3" height="24" rx="1.5" fill="white" opacity="0.9"/>
+  <rect x="293" y="320" width="8" height="24" rx="2" fill="white" opacity="0.9"/>
+  <rect x="306" y="320" width="6" height="24" rx="2" fill="white" opacity="0.9"/>
+
+  <!-- Bottom shadow accent -->
+  <rect x="163" y="390" width="186" height="16" rx="8" fill="black" opacity="0.10"/>
+</svg>
