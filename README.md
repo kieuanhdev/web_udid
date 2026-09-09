@@ -3,6 +3,17 @@
 > **Công cụ web lấy mã UDID thiết bị iOS tức thì qua giao thức Apple OTA Profile Service.**  
 > Nhanh chóng, chuẩn xác 100%, không cần kết nối máy tính, không cần iTunes / Finder hay phần mềm bên thứ ba.
 
+<p align="center">
+  <a href="https://web-udid.onrender.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/Live_Demo-web--udid.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" />
+  </a>
+  <a href="https://web-udid.onrender.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/Status-Online-success?style=for-the-badge&logo=statuspage&logoColor=white" alt="Online" />
+  </a>
+</p>
+
+> 🌐 **Website đang chạy thực tế:** [https://web-udid.onrender.com](https://web-udid.onrender.com)
+
 ---
 
 ## 🌟 Tính Năng Nổi Bật
@@ -231,7 +242,7 @@ Dự án đã tích hợp sẵn file Blueprint [`render.yaml`](./render.yaml).
 1. Đẩy mã nguồn lên repository GitHub / GitLab.
 2. Đăng nhập vào [Render Dashboard](https://dashboard.render.com/) → Chọn **New +** → **Blueprint**.
 3. Kết nối repository của dự án.
-4. Cấu hình biến môi trường `BASE_URL` trỏ tới subdomain của Render (ví dụ: `https://ios-udid-web.onrender.com`) hoặc tên miền riêng của bạn.
+4. Cấu hình biến môi trường `BASE_URL` trỏ tới subdomain của Render (ví dụ: `https://web-udid.onrender.com`) hoặc tên miền riêng của bạn.
 5. Bấm **Apply**.
 
 ### Lựa chọn 2: Triển khai trên VPS riêng (Ubuntu / Debian + Nginx + Systemd)
