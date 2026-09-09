@@ -22,17 +22,12 @@
 
 ### 📹 Video Hướng Dẫn Thao Tác
 
-<p align="center">
-  <a href="https://youtube.com/shorts/qk-uVSbGuU8" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.youtube.com/vi/qk-uVSbGuU8/maxresdefault.jpg" alt="Video hướng dẫn thao tác lấy UDID trên iOS" width="480" style="border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);" />
-  </a>
-  <br><br>
-  <a href="https://youtube.com/shorts/qk-uVSbGuU8" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.shields.io/badge/YouTube_Shorts-Xem_Video_Hướng_Dẫn-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Xem trên YouTube Shorts" />
-  </a>
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/d235f205-9acc-44a7-91d6-bc5bb5e881a3" controls="controls" width="340" style="max-width: 100%; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);">
+  </video>
   <br>
-  <em>🎬 Bấm vào ảnh hoặc nút trên để xem video hướng dẫn trên YouTube Shorts: <a href="https://youtube.com/shorts/qk-uVSbGuU8" target="_blank" rel="noopener noreferrer">https://youtube.com/shorts/qk-uVSbGuU8</a></em>
-</p>
+  <em>🎬 Video thao tác lấy UDID thực tế trên iPhone / iPad (Xem trực tiếp trên GitHub)</em>
+</div>
 
 ---
 
