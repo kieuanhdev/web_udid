@@ -149,88 +149,7 @@
         </table>
       </div>
 
-      <!-- ── Thêm vào Màn hình chính — same style as .how guide card ── -->
-      <div class="how">
-        <p class="section-label">Mẹo hay</p>
-        <h2 class="how__title">Thêm vào Màn hình chính</h2>
-        <p class="how__note">Bấm icon trên màn hình để mở Safari nhanh hơn những lần sau</p>
 
-        <div class="timeline" id="shortcut-timeline">
-
-          <!-- Step 1 -->
-          <div class="tl-item active" data-step="sc1">
-            <div class="tl-left">
-              <button class="tl-num" type="button" aria-expanded="true">1</button>
-              <div class="tl-line"></div>
-            </div>
-            <div class="tl-right">
-              <button class="tl-header" type="button">
-                <span class="tl-title">Bấm nút Chia sẻ trong Safari</span>
-                <svg class="tl-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
-              </button>
-              <div class="tl-body">
-                <p>Bấm biểu tượng <strong>Chia sẻ <span class="ios-tag" style="font-size:11px;padding:1px 6px">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle">
-                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
-                  </svg> Share</span></strong> ở thanh công cụ phía <strong>dưới cùng</strong> của Safari.</p>
-                <div class="tl-img">
-                  <img src="/img/home-step1.png" alt="Bước 1: Bấm nút Chia sẻ trong Safari" width="393" height="440" loading="lazy">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="tl-item" data-step="sc2">
-            <div class="tl-left">
-              <button class="tl-num" type="button" aria-expanded="false">2</button>
-              <div class="tl-line"></div>
-            </div>
-            <div class="tl-right">
-              <button class="tl-header" type="button">
-                <span class="tl-title">Chọn "Thêm vào Màn hình chính"</span>
-                <svg class="tl-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
-              </button>
-              <div class="tl-body">
-                <p>Cuộn xuống trong menu chia sẻ, tìm và chọn <strong>"Thêm vào Màn hình chính"</strong> <span class="ios-tag" style="font-size:11px;padding:1px 6px">Add to Home Screen</span>.</p>
-                <div class="tl-img">
-                  <img src="/img/home-step2.png" alt="Bước 2: Chọn Thêm vào Màn hình chính" width="393" height="440" loading="lazy">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="tl-item" data-step="sc3">
-            <div class="tl-left">
-              <button class="tl-num" type="button" aria-expanded="false">3</button>
-              <!-- No line after last step -->
-            </div>
-            <div class="tl-right">
-              <button class="tl-header" type="button">
-                <span class="tl-title">Bấm "Thêm" để xác nhận 🎉</span>
-                <svg class="tl-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
-              </button>
-              <div class="tl-body">
-                <p>Bấm <strong>"Thêm"</strong> (Add) ở góc trên phải. Icon <strong>Lấy UDID</strong> sẽ xuất hiện trên màn hình chính và <strong>luôn mở bằng Safari</strong> — không phải webview.</p>
-                <div class="tl-img">
-                  <img src="/img/home-step3.png" alt="Bước 3: Bấm Thêm ở góc trên bên phải" width="393" height="440" loading="lazy">
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /shortcut-timeline -->
-      </div><!-- /how -->
 
       <!-- ── Bottom Actions ── -->
       <div class="result-actions">
@@ -479,41 +398,7 @@
     });
   }
 
-  // Shortcut timeline accordion
-  function setupAccordion(containerSelector) {
-    const items = document.querySelectorAll(`${containerSelector} .tl-item`);
-    if (!items.length) return;
 
-    function openItem(targetItem) {
-      items.forEach(item => {
-        const isTarget = item === targetItem;
-        item.classList.toggle('active', isTarget);
-        const nb = item.querySelector('.tl-num');
-        if (nb) nb.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
-      });
-      setTimeout(() => {
-        targetItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 80);
-    }
-
-    items.forEach(item => {
-      const numBtn = item.querySelector('.tl-num');
-      const header = item.querySelector('.tl-header');
-      [numBtn, header].forEach(btn => {
-        if (!btn) return;
-        btn.addEventListener('click', () => {
-          if (item.classList.contains('active')) {
-            item.classList.remove('active');
-            numBtn?.setAttribute('aria-expanded', 'false');
-          } else {
-            openItem(item);
-          }
-        });
-      });
-    });
-  }
-
-  setupAccordion('#shortcut-timeline');
 </script>
 
 </body>
