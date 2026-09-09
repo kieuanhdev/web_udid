@@ -1,0 +1,7 @@
+# robots.txt cho dịch vụ lấy UDID iOS
+User-agent: *
+Allow: /$
+Disallow: /result
+Disallow: /enroll
+Disallow: /callback
+Disallow: /webclip

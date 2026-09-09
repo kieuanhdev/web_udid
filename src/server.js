@@ -240,10 +240,11 @@ async function handleStatic(req, res, pathname) {
     '.svg': 'image/svg+xml',
     '.webp': 'image/webp',
     '.ico': 'image/x-icon',
+    '.txt': 'text/plain; charset=utf-8',
   };
 
-  const isImg = pathname.startsWith('/img/');
-  const cacheControl = isImg ? 'public, max-age=86400' : 'no-cache';
+  const isCacheable = pathname.startsWith('/img/') || pathname === '/robots.txt';
+  const cacheControl = isCacheable ? 'public, max-age=86400' : 'no-cache';
   const isHead = req.method === 'HEAD';
 
   await sendFile(res, filePath, types[ext] || 'application/octet-stream', cacheControl, isHead);
@@ -270,7 +271,13 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/result') return handleResult(req, res, url);
     if (req.method === 'GET' && url.pathname === '/webclip') return handleWebclip(req, res);
 
-    if ((req.method === 'GET' || req.method === 'HEAD') && /^\/(style\.css|img\/)/.test(url.pathname)) {
+    if ((req.method === 'GET' || req.method === 'HEAD') && url.pathname === '/favicon.ico') {
+      res.writeHead(302, { Location: '/img/icon.png' });
+      res.end();
+      return;
+    }
+
+    if ((req.method === 'GET' || req.method === 'HEAD') && /^\/(style\.css|robots\.txt|img\/)/.test(url.pathname)) {
       return handleStatic(req, res, url.pathname);
     }
 
@@ -284,3 +291,18 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`iOS UDID web listening on 0.0.0.0:${PORT}, BASE_URL=${BASE_URL}`);
 });
+
+function gracefulShutdown(signal) {
+  console.log(`\nNhận tín hiệu ${signal}, đang đóng server an toàn...`);
+  server.close(() => {
+    console.log('Server đã đóng kết nối.');
+    process.exit(0);
+  });
+  setTimeout(() => {
+    console.error('Đóng server quá thời gian, buộc dừng tiến trình.');
+    process.exit(1);
+  }, 10000).unref();
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

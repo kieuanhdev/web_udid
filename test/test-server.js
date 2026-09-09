@@ -116,11 +116,19 @@ try {
   console.log('✓ Phục vụ App Icon PNG thành công!\n');
 
   // 8. GET /result?t=TOKEN (chưa có kết quả hoặc hết hạn)
-  console.log('[8/8] Kiểm tra GET /result...');
+  console.log('[8/9] Kiểm tra GET /result...');
   const resultRes = await request(`/result?t=${token}`);
   assert.strictEqual(resultRes.status, 200);
   assert.ok(resultRes.body.includes('Không tìm thấy kết quả'));
   console.log('✓ Xử lý trang kết quả chính xác khi token chưa có data!\n');
+
+  // 9. GET /robots.txt
+  console.log('[9/9] Kiểm tra GET /robots.txt...');
+  const robotsRes = await request('/robots.txt');
+  assert.strictEqual(robotsRes.status, 200);
+  assert.strictEqual(robotsRes.headers.get('content-type'), 'text/plain; charset=utf-8');
+  assert.ok(robotsRes.body.includes('Disallow: /result'));
+  console.log('✓ Phục vụ robots.txt chuẩn SEO & bảo mật thành công!\n');
 
   console.log('=== TẤT CẢ ROUTE VÀ TÀI NGUYÊN ĐÃ ĐƯỢC XÁC THỰC THÀNH CÔNG! ===');
 } finally {
