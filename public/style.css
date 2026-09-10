@@ -1255,21 +1255,6 @@ body {
 
 [data-theme="dark"] .step-tab.active { background: #2c2c38; }
 
-/* Also support system preference as fallback when no explicit theme is set */
-@media (prefers-color-scheme: dark) {
-  [data-theme="auto"] {
-    --bg:      #0c0c0e;
-    --bg-card: #18181e;
-    --bg-muted: #222228;
-    --border:  rgba(255,255,255,0.07);
-    --txt:     #f0f1f8;
-    --txt-sec: #8a92aa;
-    --txt-muted: #5a6280;
-    --shadow-card: 0 2px 20px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3);
-  }
-  [data-theme="auto"] .step-tab.active { background: #2c2c38; }
-}
-
 /* ==========================================================================
    THEME TOGGLE BUTTON
    ========================================================================== */
@@ -1307,7 +1292,7 @@ body {
   transform: scale(0.92);
 }
 
-/* When in light mode content area, invert the toggle look */
+/* Light mode toggle style */
 [data-theme="light"] .theme-toggle {
   background: rgba(0,0,0,0.06);
   border-color: rgba(0,0,0,0.08);
@@ -1318,20 +1303,6 @@ body {
 [data-theme="light"] .theme-toggle:hover {
   background: rgba(0,0,0,0.10);
   box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-}
-
-/* Auto + system light = also light look */
-@media (prefers-color-scheme: light) {
-  [data-theme="auto"] .theme-toggle {
-    background: rgba(0,0,0,0.06);
-    border-color: rgba(0,0,0,0.08);
-    color: var(--txt-sec);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  }
-  [data-theme="auto"] .theme-toggle:hover {
-    background: rgba(0,0,0,0.10);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-  }
 }
 
 /* Icon transitions */
@@ -1347,33 +1318,6 @@ body {
 
 [data-theme="dark"] .theme-toggle__icon--sun { display: block; }
 [data-theme="dark"] .theme-toggle__icon--moon { display: none; }
-
-@media (prefers-color-scheme: dark) {
-  [data-theme="auto"] .theme-toggle__icon--sun { display: block; }
-  [data-theme="auto"] .theme-toggle__icon--moon { display: none; }
-}
-
-/* Auto-mode indicator dot (green = following system) */
-.theme-toggle::after {
-  content: '';
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--green);
-  border: 2px solid rgba(0,0,0,0.2);
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events: none;
-}
-
-[data-theme="auto"] .theme-toggle::after {
-  opacity: 1;
-  transform: scale(1);
-}
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
